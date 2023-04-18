@@ -9,14 +9,16 @@
 <body>
 <?php
     $data = $_POST['data'];
-    if($data['calc_answer'] == $data['input_answer']) {
-        echo "<p>「{$data['calc_answer']}」正解です！！</p>";
-    } else {
-        echo "<p>残念！！正解は「{$data['calc_answer']}」です</p>";
+
+    foreach($data as $d) {
+        if($d['correct_answer'] == $d['input_answer']) {
+            echo "<p>「{$d['correct_answer']}」正解です！！</p>";
+        } else {
+            echo "<p>残念！！正解は「{$d['correct_answer']}」です</p>";
+        }
     }
 ?>
 
-    
 </body>
 </html>
 

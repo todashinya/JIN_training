@@ -14,29 +14,41 @@
     </style>
 </head>
 <body>
-<?php
-    // 乱数生成
-    $a = rand(0,100);
-    $b = rand(0,100);
-    $array = ['+', '-', '/', '*'];
-    $arrayIndex = array_rand($array);
-    $operator = $array[$arrayIndex];
-    $formula = "$a $operator $b";
 
-    // 演算子に応じて計算結果を出力
-    switch($operator) {
-        case '+':
-        $answer = $a + $b;
-        break;
-        case '-':
-        $answer = $a - $b;
-        break;
-        case '*':
-        $answer = $a * $b;
-        break;
-        case '/':
-        $answer = $a / $b;
-        break;
+<?php
+    //10問作成
+    $questionsCnt = 10;
+    $dataList = array();
+
+    for($i=0; $i < $questionsCnt; $i++){
+        // 乱数生成
+        $a = rand(0,100);
+        $b = rand(0,100);
+        $array = ['+', '-', '÷', '×'];
+        $arrayIndex = array_rand($array);
+        $operator = $array[$arrayIndex];
+        $formula = "$a $operator $b";
+
+        // 演算子に応じて計算結果を出力
+        switch($operator) {
+            case '+':
+                $answer = $a + $b;
+            break;
+            case '-':
+                $answer = $a - $b;
+            break;
+            case '×':
+                $answer = $a * $b;
+            break;
+            case '÷':
+                $answer = $a / $b;
+            break;
+        }
+
+        $dataList[] = array(
+            'formula' => $formula,
+            'answer' => $answer
+        );
     }
 ?>
 
@@ -47,11 +59,13 @@
 </p>
 
 <form action="./answer.php" method="POST">
-    
-    <input type="hidden" name="data[calc_answer]" value="<?php echo $answer; ?>">
-    <?php echo $formula; ?>&nbsp;=&nbsp;<input type="text" name="data[input_answer]" value="">
+    <?php 
+        for($i=0; $i < $questionsCnt; $i++){
+            echo '<p>' . $dataList[$i]['formula'] . ' = ' . "<input type='number' name='data[$i][input_answer]' value=''>" . '</p>';
+            echo "<input type='hidden' name='data[$i][correct_answer]' value='{$dataList[$i]['answer']}'>";
+        }
+    ?>
     <button type="submit">答え合わせする</button>
-
 </form>
     
 </body>
