@@ -2,18 +2,10 @@
 
 class QuestionClass {
 
-    public $startDateTime;
-    public $questionsCnt;
-    public $dataList;
-
     /**
      * ランダムで計算問題を作成する
      */
-
-    function createQuestion() {
-        //開始時間
-        $objDateTime = new DateTime();
-        $this->startDateTime = $objDateTime->getTimestamp();
+    public function createQuestion() {
 
         //POSTされた「問題数」に応じて問題作成
         $questionNum = $this->questionNumberCheck();
@@ -56,18 +48,21 @@ class QuestionClass {
                     break;
                 case '-':
                     // 条件1:負の解にならない問題作成
-                    $b = rand(0, $a);
-                    // 条件1:END
+                    if ($a < $b) {
+                        $tmp = $a;
+                        $a = $b;
+                        $b = $tmp;
+                    }
                     $answer = $a - $b;
+                    // 条件1:END
                     break;
                 case '×':
                     $answer = $a * $b;
                     break;
                 case '÷':
                     // 条件2:0除算が起きないようにする
-                    if ($a === 0) {
-                        // $a = rand(1, $max);
-                        $a = 100;
+                    if ($a == 0) {
+                        $a = rand(1, $max);
                     }
                     // 条件2:END
 
@@ -79,7 +74,7 @@ class QuestionClass {
 
                     // 条件4:小数第三位を四捨五入して計算
                     $answer = round(($a / $b), 3);
-                    // 条件4:END
+                    // 条件4:END   
                     break;
             }
 
@@ -89,8 +84,13 @@ class QuestionClass {
             $this->dataList[] = array(
                 'formula' => $formula,
                 'answer' => $answer,
+                'display_num' => $i + 1,
             );
+
         }
+        
+        return $this->dataList;
+        
     }
 
     /**
@@ -101,7 +101,7 @@ class QuestionClass {
      * 3 掛け算のみ
      * 4 割り算のみ
      */
-    function calcTypeCheck() {
+    private function calcTypeCheck() {
         $calctype = $_POST['calctype'] ?? 0;
         return $calctype;
     }
@@ -109,24 +109,27 @@ class QuestionClass {
     /**
      * index.phpからPOSTされた値をもとに、出題数の最小値を返却する
      */
-    function minNumberCheck() {
-        $min = $_POST['min'] ?? 0;
+    private function minNumberCheck() {
+        // $min = $_POST['min'] ?? 0;
+        $min = isset($_POST['min']) && $_POST['min'] !== '' ? $_POST['min'] : 0;
         return $min;
     }
 
     /**
      * index.phpからPOSTされた値をもとに、出題数の最大値を返却する
      */
-    function maxNumberCheck() {
-        $max = $_POST['max'] ?? 100;
+    private function maxNumberCheck() {
+        // $max = $_POST['max'] ?? 100;
+        $max = isset($_POST['max']) && $_POST['max'] !== '' ? $_POST['max'] : 100;
         return $max;
     }
 
     /**
      * index.phpからPOSTされた値をもとに、出題数を返却する
      */
-    function questionNumberCheck() {
-        $questionNum = $_POST['questionNum'] ?? 10;
+    private function questionNumberCheck() {
+        // $questionNum = $_POST['questionNum'] ?? 10;
+        $questionNum = isset($_POST['ques$questionNum']) && $_POST['ques$questionNum'] !== '' ? $_POST['ques$questionNum'] : 10;
         return $questionNum;
     }
 }

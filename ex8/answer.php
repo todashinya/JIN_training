@@ -28,6 +28,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $correctAnswerCnt = 0;
     $wrongAnswerCnt = 0;
 
+    
     foreach($data as $d) {
         if($d['input_answer'] == '') {
             echo "問{$d['display_num']}" . '<p class="error__msg">' . 'フォームに値を入力してください' .  '</p>';
