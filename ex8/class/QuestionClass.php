@@ -2,38 +2,39 @@
 
 class QuestionClass {
 
+
+    private $__questionNum = 10;
+
+    private $__min = 0;
+
+    private $__max = 100;
+
+    private $__calctype = 0;
+
+    
     /**
      * ランダムで計算問題を作成する
      */
     public function createQuestion() {
 
-        //POSTされた「問題数」に応じて問題作成
-        $questionNum = $this->questionNumberCheck();
-        $this->questionsCnt = $questionNum;
-
-        //POSTされた「最小値」「最大値」に応じて問題作成
-        $min = $this->minNumberCheck();
-        $max = $this->maxNumberCheck();
-
         //配列初期化
         $this->dataList = array();
 
-        for ($i = 0; $i < $this->questionsCnt; $i++) {
+        for ($i = 0; $i < $this->__questionNum; $i++) {
             // 乱数生成
-            $a = rand($min, $max);
-            $b = rand($min, $max);
+            $a = rand($this->__min, $this->__max);
+            $b = rand($this->__min, $this->__max);
 
+            
             // 出題形式のチェック
-            $calcTypeFlag = $this->calcTypeCheck();
-
             // 出題形式に応じて演算子を決定
-            if($calcTypeFlag == 1) {
+            if($this->__calctype == 1) {
                 $operator = '+';
-            } else if($calcTypeFlag == 2) {
+            } else if($this->__calctype == 2) {
                 $operator = '-';
-            } else if($calcTypeFlag == 3) {
+            } else if($this->__calctype == 3) {
                 $operator = '×';
-            } else if($calcTypeFlag == 4) {
+            } else if($this->__calctype == 4) {
                 $operator = '÷';
             } else {
                 $array = ['+', '-', '÷', '×'];
@@ -62,7 +63,7 @@ class QuestionClass {
                 case '÷':
                     // 条件2:0除算が起きないようにする
                     if ($a == 0) {
-                        $a = rand(1, $max);
+                        $a = rand(1, $this->__max);
                     }
                     // 条件2:END
 
@@ -90,7 +91,6 @@ class QuestionClass {
         }
         
         return $this->dataList;
-        
     }
 
     /**
@@ -101,35 +101,28 @@ class QuestionClass {
      * 3 掛け算のみ
      * 4 割り算のみ
      */
-    private function calcTypeCheck() {
-        $calctype = $_POST['calctype'] ?? 0;
-        return $calctype;
+    public function setCalcType($val) {
+        return $this->__calctype = $val;
     }
 
     /**
      * index.phpからPOSTされた値をもとに、出題数の最小値を返却する
      */
-    private function minNumberCheck() {
-        // $min = $_POST['min'] ?? 0;
-        $min = isset($_POST['min']) && $_POST['min'] !== '' ? $_POST['min'] : 0;
-        return $min;
+    public function setMinNumber($val) {
+        return $this->__min = $val;
     }
 
     /**
      * index.phpからPOSTされた値をもとに、出題数の最大値を返却する
      */
-    private function maxNumberCheck() {
-        // $max = $_POST['max'] ?? 100;
-        $max = isset($_POST['max']) && $_POST['max'] !== '' ? $_POST['max'] : 100;
-        return $max;
+    public function setMaxNumber($val) {
+        return $this->__max = $val;
     }
 
     /**
      * index.phpからPOSTされた値をもとに、出題数を返却する
      */
-    private function questionNumberCheck() {
-        // $questionNum = $_POST['questionNum'] ?? 10;
-        $questionNum = isset($_POST['ques$questionNum']) && $_POST['ques$questionNum'] !== '' ? $_POST['ques$questionNum'] : 10;
-        return $questionNum;
+    public function setQuestionNumber($val) {
+        return $this->__questionNum = $val;
     }
 }

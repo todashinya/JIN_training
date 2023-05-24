@@ -15,9 +15,18 @@
 
         //インスタンス化
         $obj = new QuestionClass;
+        
+        $obj->setCalcType($_POST['calctype']);
+        
+        $obj->setMinNumber($_POST['min']);
+        
+        $obj->setMaxNumber($_POST['max']);
+        
+        $obj->setQuestionNumber($_POST['questionNum']);
+        
         $questions = $obj->createQuestion();
 
-        //開始時間
+        //開始時間取得
         $objDateTime = new DateTime();
         $startDateTime = $objDateTime->getTimestamp();
     ?>

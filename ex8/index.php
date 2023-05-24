@@ -34,8 +34,8 @@
             <input type="radio" name="calctype" value="3"><label for="">掛け算</label>
             <input type="radio" name="calctype" value="4"><label for="">割り算</label>
         </div>
-        <div class="questionNum">
-            <div><label for="">最小値:</label><input type="text" name="min" value="1" id=""></div>
+        <div class="questionDetail">
+            <div><label for="">最小値:</label><input type="text" name="min" value="0" id=""></div>
             <div><label for="">最大値:</label><input type="text" name="max" value="100" id=""></div>
             <div><label for="">問題数:</label><input type="text" name="questionNum" value="10" id=""></div>  
         </div>
